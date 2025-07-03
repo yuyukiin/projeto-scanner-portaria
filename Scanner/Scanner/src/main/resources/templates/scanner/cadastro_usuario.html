@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Usuário</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+
+<body class="bg-[#374151] flex items-center justify-center min-h-screen">
+
+<button class="menu-btn" onclick="toggleMenu()" title="Menu">&#9776;</button>
+
+<div id="sidebar" class="sidebar">
+  <a href="/sistema">Realizar Empréstimo</a>
+  <a href="/movimentos/listar-emprestados">Realizar Devolução</a>
+  <a href="/usuario/cadastro" class="active">Cadastrar Usuário</a>
+  <a href="/item/cadastro">Cadastrar Item</a>
+  <a href="/sistema/itens-usuarios">Usuários e Itens</a>
+  <a href="/movimentos">Registro de Movimentações</a>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<div class="form-container w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+  <img th:src="@{/imagens/logoUFN.png}" alt="Logo UFN" class="mx-auto mb-6 w-40 transition-transform hover:scale-105" />
+  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Usuário</h2>
+
+  <div th:if="${erroCodigo}" class="mb-4 p-3 rounded-md bg-red-100 border border-red-400 text-red-700">
+    <span th:text="${erroCodigo}"></span>
+  </div>
+
+  <form th:action="@{/usuario/cadastrar}" th:object="${usuario}" method="post" class="space-y-5">
+    <div>
+      <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome Completo <span class="text-red-500">*</span></label>
+      <input type="text" th:field="*{nome}" id="nome" required placeholder="Digite o nome completo"
+             class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
+    </div>
+
+    <div>
+      <label for="codigoBarra" class="block text-sm font-medium text-gray-700 mb-1">Código de Barras <span class="text-red-500">*</span></label>
+      <input type="text" th:field="*{codigoBarra}" id="codigoBarra" required placeholder="Digite o código de barras"
+             class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
+    </div>
+
+    <button type="submit" class="w-full bg-[#15d8fa] text-black p-2 rounded-md hover:bg-[#00abc9] transition mt-4">Cadastrar Usuário</button>
+  </form>
+</div>
+
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('show')) toggleMenu();
+    }
+  });
+
+  const codigoInput = document.getElementById('codigoBarra');
+  codigoInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+</script>
+</body>
+</html>
